@@ -57,9 +57,11 @@ function DoctorDashboard({ user, onLogout }) {
       formData.append('title', form.title);
       formData.append('image', form.image);
       formData.append('category', form.category);
-      formData.append('summary', form.summary);
+      const summaryWords = form.summary.split(' ');
+      const limitedSummary = summaryWords.length > 15 ? summaryWords.slice(0, 15).join(' ') : form.summary;
+      formData.append('summary', limitedSummary);
       formData.append('content', form.content);
-      formData.append('is_draft', form.is_draft);
+      formData.append('is_draft', form.is_draft ? 'true' : 'false');
       await axios.post('http://localhost:5000/api/blogs', formData);
       setForm({ title: '', image: null, category: CATEGORIES[0], summary: '', content: '', is_draft: false });
       fetchMyBlogs();
